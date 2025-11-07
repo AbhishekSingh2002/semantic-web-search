@@ -1,21 +1,69 @@
-# Semantic Web Search Engine
+# Website Content Search
 
-A semantic search engine that allows users to search through HTML content of web pages using natural language queries. The application fetches web pages, processes the HTML content, and performs semantic search to find the most relevant content chunks.
+A powerful semantic search engine that enables users to search through website content with precision. The application fetches web pages, processes both text and HTML content, and performs semantic search to find the most relevant content chunks with highlighted matches.
 
-## Features
+## ✨ Features
 
-- **Web Page Crawling**: Fetches and parses HTML content from any public URL
-- **Semantic Search**: Uses vector embeddings to understand the meaning behind search queries
-- **Content Chunking**: Splits web pages into manageable chunks for efficient searching
-- **Relevance Ranking**: Ranks search results based on semantic similarity
-- **Modern Web Interface**: Clean, responsive UI built with Next.js
+- **Dual-View Search**: View both cleaned text and raw HTML content
+- **Semantic Understanding**: Leverages vector embeddings for accurate, context-aware search results
+- **Smart Chunking**: Intelligently splits web content while preserving context
+- **Relevance Scoring**: Results ranked by semantic similarity with percentage match scores
+- **Modern UI/UX**: Clean, responsive interface with intuitive controls
+- **HTML Preview**: Toggle to view the original HTML source of search results
+- **Performance Optimized**: Efficient processing and fast search results
 
-## Prerequisites
+## 🚀 Getting Started
+
+### Prerequisites
 
 - Python 3.8+
 - Node.js 16+
 - npm or yarn
 - pip (Python package manager)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/semantic-web-search.git
+   cd semantic-web-search
+   ```
+
+2. **Set up the backend**
+   ```bash
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+3. **Set up the frontend**
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+
+4. **Environment Configuration**
+   Create a `.env.local` file in the frontend directory with:
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:5000
+   ```
+
+### Running the Application
+
+1. **Start the backend server**
+   ```bash
+   cd backend
+   python app.py
+   ```
+
+2. **Start the frontend**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+3. Open your browser and visit `http://localhost:3000`
 
 ## Project Structure
 

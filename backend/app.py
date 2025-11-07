@@ -1,3 +1,7 @@
+import chromadb
+# Disable ChromaDB telemetry to avoid capture() errors
+chromadb.telemetry = None
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from html_processor import HTMLProcessor
@@ -43,9 +47,9 @@ def search():
         
         # Step 1: Fetch and clean HTML
         logger.info("Fetching and cleaning HTML content...")
-        cleaned_text = html_processor.process_url(search_request.url)
+        cleaned_text, raw_html = html_processor.process_url(search_request.url)
         
-        if not cleaned_text:
+        if not cleaned_text or not raw_html:
             return jsonify({
                 "error": "No content found at the provided URL"
             }), 400
@@ -54,7 +58,7 @@ def search():
         
         # Step 2: Tokenize and chunk the content
         logger.info("Tokenizing and chunking content...")
-        chunks = tokenizer.chunk_text(cleaned_text, max_tokens=500)
+        chunks = tokenizer.chunk_text(cleaned_text, raw_html, max_tokens=500)
         
         if not chunks:
             return jsonify({
@@ -94,9 +98,12 @@ def search():
         return jsonify(response.model_dump()), 200
         
     except Exception as e:
-        logger.error(f"Error processing request: {str(e)}")
+        error_msg = f"Error processing search request: {str(e)}"
+        logger.error(error_msg, exc_info=True)  # This will log the full traceback
         return jsonify({
-            "error": f"Internal server error: {str(e)}"
+            "error": "Error processing your request",
+            "details": str(e),
+            "status": "error"
         }), 500
 
 @app.route('/api/stats', methods=['GET'])

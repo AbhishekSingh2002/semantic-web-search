@@ -40,28 +40,18 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>HTML Content Search Engine</title>
-        <meta name="description" content="Search HTML content using semantic vectors" />
+        <title>Website Content Search</title>
+        <meta name="description" content="Search through website content with precision" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className="container">
         <header className="header">
-          <h1>🔍 HTML Content Search</h1>
-          <p>Search any website's content using AI-powered semantic search</p>
+          <h1>Website Content Search</h1>
+          <p>Search through website content with precision</p>
         </header>
 
         <SearchForm onSearch={handleSearch} loading={loading} />
-
-        {loading && (
-          <div className="loading">
-            <div className="spinner"></div>
-            <p style={{ marginTop: '1rem' }}>
-              Fetching and analyzing content...
-            </p>
-          </div>
-        )}
 
         {error && (
           <div className="error">

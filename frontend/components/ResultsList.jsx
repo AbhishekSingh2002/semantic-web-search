@@ -1,5 +1,8 @@
+import { useState } from 'react';
+
 export default function ResultsList({ results, url, query, totalChunks }) {
-  // Debug logging
+  const [expandedResults, setExpandedResults] = useState({});
+
   console.log('ResultsList props:', { results, url, query, totalChunks });
   
   if (!results || results.length === 0) {
@@ -11,38 +14,48 @@ export default function ResultsList({ results, url, query, totalChunks }) {
     );
   }
 
+  const toggleHtml = (index) => {
+    setExpandedResults(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
   return (
     <div>
       <div className="results-header">
         <h2>Search Results</h2>
-        <p>
-          Found {results.length} relevant chunks out of {totalChunks} total chunks from{' '}
-          <strong>{url}</strong>
-        </p>
-        <p style={{ marginTop: '0.5rem' }}>
-          Query: <strong>"{query}"</strong>
-        </p>
       </div>
 
       <div className="results-list">
         {results.map((result, index) => (
           <div key={result.chunk_id || index} className="result-card">
             <div className="result-header">
-              <span className="result-rank">#{index + 1}</span>
-              <div className="result-meta">
-                <div className="meta-item">
-                  <span>📝 {result.token_count} tokens</span>
-                </div>
-                <div className="meta-item">
-                  <span className="score-badge">
-                    {(result.relevance_score * 100).toFixed(1)}% match
-                  </span>
-                </div>
+              <div className="result-title">
+                {result.content.substring(0, 100)}...
               </div>
+              <span className="score-badge">
+                {(result.relevance_score * 100).toFixed(0)}% match
+              </span>
             </div>
-            <div className="result-content">
-              {result.content}
+            
+            <div className="result-path">
+              Path: /home
             </div>
+
+            <button 
+              className="view-html-btn"
+              onClick={() => toggleHtml(index)}
+            >
+              <span>{expandedResults[index] ? '◆' : '◇'}</span>
+              View HTML {expandedResults[index] ? '▲' : '▼'}
+            </button>
+
+            {expandedResults[index] && (
+              <div className="html-content">
+                {result.html || result.content}
+              </div>
+            )}
           </div>
         ))}
       </div>

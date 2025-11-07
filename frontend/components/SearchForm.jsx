@@ -14,11 +14,11 @@ export default function SearchForm({ onSearch, loading }) {
   return (
     <form className="search-form" onSubmit={handleSubmit}>
       <div className="form-group">
-        <label htmlFor="url">Website URL</label>
+        <span className="input-icon">🌐</span>
         <input
           id="url"
           type="url"
-          placeholder="https://example.com"
+          placeholder="https://smarter.codes"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           required
@@ -27,11 +27,11 @@ export default function SearchForm({ onSearch, loading }) {
       </div>
 
       <div className="form-group">
-        <label htmlFor="query">Search Query</label>
+        <span className="input-icon">🔍</span>
         <input
           id="query"
           type="text"
-          placeholder="Enter your search query..."
+          placeholder="AI"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           required
@@ -44,7 +44,17 @@ export default function SearchForm({ onSearch, loading }) {
         className="submit-btn"
         disabled={loading || !url || !query}
       >
-        {loading ? 'Searching...' : 'Search'}
+        {loading ? (
+          <>
+            <span className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }}></span>
+            Searching...
+          </>
+        ) : (
+          <>
+            <span>🔍</span>
+            Search
+          </>
+        )}
       </button>
     </form>
   );
