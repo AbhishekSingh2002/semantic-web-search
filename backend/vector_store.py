@@ -15,7 +15,8 @@ class VectorStore:
         ))
         
         # Use sentence transformer for embeddings
-        self.model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+        # Lazy load model on first use
+        self.model = None
         
         # Create or get collection
         try:
@@ -30,6 +31,12 @@ class VectorStore:
             metadata={"hnsw:space": "cosine"}
         )
     
+    def _get_model(self):
+        """Lazy load the sentence transformer model"""
+        if self.model is None:
+            self.model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+        return self.model
+
     def add_chunks(self, chunks: List[dict], url: str) -> None:
         """
         Add text chunks to the vector store
@@ -41,7 +48,7 @@ class VectorStore:
         token_counts = [chunk['token_count'] for chunk in chunks]
         
         # Generate embeddings
-        embeddings = self.model.encode(texts, show_progress_bar=False)
+        embeddings = self._get_model().encode(texts, show_progress_bar=False)
         
         # Prepare data for ChromaDB
         ids = [f"{url}_{i}_{uuid.uuid4().hex[:8]}" for i in range(len(chunks))]
@@ -67,7 +74,7 @@ class VectorStore:
         Search for relevant chunks using semantic similarity
         """
         # Generate query embedding
-        query_embedding = self.model.encode([query], show_progress_bar=False)[0]
+        query_embedding = self._get_model().encode([query], show_progress_bar=False)[0]
         
         # Search in ChromaDB
         results = self.collection.query(
