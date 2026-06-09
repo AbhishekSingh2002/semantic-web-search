@@ -9,7 +9,7 @@ services:
       - key: PORT
         value: 5000
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.11.9
 
   - type: web
     name: semantic-web-search-frontend
