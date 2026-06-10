@@ -21,6 +21,8 @@ export default function Home() {
       const response = await axios.post(`${BACKEND_URL}/api/search`, {
         url,
         query
+      }, {
+        timeout: 120000 // 2 minute timeout for cold starts
       });
 
       console.log('Received response:', response.data);
@@ -30,7 +32,7 @@ export default function Home() {
       setError(
         err.response?.data?.error || 
         err.message || 
-        'An error occurred while searching'
+        'An error occurred while searching. If this persists, the backend may be waking up from cold start - please try again.'
       );
     } finally {
       setLoading(false);
